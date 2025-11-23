@@ -1,0 +1,158 @@
+.prediction-container {
+  padding: 50px 80px;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #f0faff, #ffffff);
+  font-family: "Segoe UI", sans-serif;
+  color: #2f3640;
+}
+
+.prediction-title {
+  font-size: 3rem;
+  font-weight: 700;
+  color: #0a3d62;
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+.prediction-subtitle {
+  font-size: 1.2rem;
+  text-align: center;
+  margin-bottom: 40px;
+  color: #555;
+}
+
+.prediction-content {
+  display: flex;
+  justify-content: space-between;
+  gap: 50px;
+  flex-wrap: wrap;
+}
+
+.prediction-form {
+  flex: 1;
+  min-width: 300px;
+  max-width: 450px;
+  background: white;
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 20px;
+}
+
+.form-group label {
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+
+.form-group input {
+  padding: 10px 15px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 1rem;
+}
+
+.submit-btn {
+  padding: 12px 25px;
+  background-color: #0984e3;
+  color: white;
+  font-weight: 600;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  width: 100%;
+  font-size: 1.1rem;
+  transition: 0.3s ease;
+}
+
+.submit-btn:hover {
+  background-color: #075fa3;
+}
+
+.prediction-result {
+  flex: 1;
+  min-width: 300px;
+  max-width: 400px;
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+}
+
+.result-card {
+  background: white;
+  padding: 25px;
+  border-radius: 12px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+  text-align: center;
+  font-weight: 600;
+}
+
+.result-card.positive {
+  border-left: 6px solid #e74c3c;
+}
+
+.result-card.negative {
+  border-left: 6px solid #2ecc71;
+}
+
+.tips-card {
+  background: #f0faff;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.05);
+}
+
+.tips-card h3 {
+  margin-bottom: 12px;
+  color: #0a3d62;
+}
+
+.tips-card ul {
+  padding-left: 18px;
+}
+
+.tips-card li {
+  margin-bottom: 8px;
+}
+
+
+.radio-group {
+  display: flex;
+  gap: 20px;
+  margin-top: 8px;
+}
+
+.radio-group label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.radio-group input[type="radio"] {
+  accent-color: #0984e3; /* modern blue color */
+  width: 18px;
+  height: 18px;
+}
+
+
+
+
+
+/* RESPONSIVE DESIGN */
+@media (max-width: 900px) {
+  .prediction-content {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .prediction-form,
+  .prediction-result {
+    max-width: 100%;
+  }
+}

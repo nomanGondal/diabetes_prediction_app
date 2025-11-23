@@ -1,0 +1,76 @@
+/* PAGE LAYOUT */
+.home-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 60px 80px;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #e5f6ff, #ffffff);
+}
+
+/* LEFT SIDE CONTENT */
+.home-content {
+  max-width: 600px;
+}
+
+.title {
+  font-size: 3rem;
+  font-weight: 700;
+  color: #0a3d62;
+  margin-bottom: 20px;
+}
+
+.subtitle {
+  font-size: 1.2rem;
+  line-height: 1.6;
+  color: #2f3640;
+  margin-bottom: 40px;
+}
+
+/* MAIN CTA BUTTON */
+.predict-btn {
+  padding: 15px 35px;
+  background-color: #0984e3;
+  color: white;
+  font-size: 1.2rem;
+  font-weight: 600;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: 0.25s ease;
+  box-shadow: 0 6px 15px rgba(0, 123, 255, 0.2);
+}
+
+.predict-btn:hover {
+  background-color: #075fa3;
+  transform: translateY(-3px);
+}
+
+/* RIGHT SIDE IMAGE SECTION */
+.hero-image {
+  width: 450px;
+  height: 450px;
+  background-image: url("https://cdn.pixabay.com/photo/2017/06/23/20/39/diabetes-2438647_1280.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+/* RESPONSIVE DESIGN */
+@media (max-width: 900px) {
+  .home-container {
+    flex-direction: column;
+    text-align: center;
+    padding: 40px 20px;
+  }
+
+  .hero-image {
+    width: 300px;
+    height: 300px;
+    margin-top: 30px;
+  }
+
+  .title {
+    font-size: 2.4rem;
+  }
+}
