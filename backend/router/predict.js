@@ -1,7 +1,7 @@
-const express = require("express");
-const { precontrol } = require("../controller/precontroller");
-const router = express.Router();
+const express = require("express")
+const { precontrol } = require("../controller/precontroller")
+const router = express.Router()
 
-router.post("/pre",precontrol);
+router.post("/get-form-data", precontrol)
 
-module.exports = router; 
+module.exports = router
