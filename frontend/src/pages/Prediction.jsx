@@ -1,6 +1,7 @@
 import { useState } from "react"
 import "./prediction.css"
 import axios from "axios"
+import { API_URL } from "../constants"
 
 function Prediction() {
   const [formData, setFormData] = useState({
@@ -33,10 +34,7 @@ function Prediction() {
 
     setLoading(true)
     try {
-      const response = await axios.post(
-        "http://localhost:3000/prediction/get-form-data",
-        formData
-      )
+      const response = await axios.post(API_URL, formData)
       setResult(response.data.data)
     } catch (err) {
       console.error(err)

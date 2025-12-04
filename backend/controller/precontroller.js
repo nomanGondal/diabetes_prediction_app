@@ -1,25 +1,40 @@
-const precontrol = async (req, res) => {
+const { flaskResponse } = require("../services/flask-predication.service")
+
+const predicationController = async (req, res) => {
   try {
+    const {
+      BMI,
+      HighBP,
+      HighChol,
+      Age,
+      PhysActivity,
+      HeartDiseaseorAttack,
+      GenHlth,
+      PhysHlth,
+      DiffWalk,
+    } = req.body
+
     const flaskArray = [
-      req.body.BMI,
-      req.body.HighBP,
-      req.body.HighChol,
-      req.body.Age,
-      req.body.PhysActivity,
-      req.body.HeartDiseaseorAttack,
-      req.body.GenHlth,
-      req.body.PhysHlth,
-      req.body.DiffWalk,
+      BMI,
+      HighBP,
+      HighChol,
+      Age,
+      PhysActivity,
+      HeartDiseaseorAttack,
+      GenHlth,
+      PhysHlth,
+      DiffWalk,
     ]
 
-    // const flaskResult = await flaskResponse(flaskArray)
+    const flaskResult = await flaskResponse(flaskArray)
 
     return res.send({
       success: true,
       message: "prediction generated",
       data: {
-        hello: "hello",
+        hello: "we got you broh",
       },
+      flaskResult,
     })
   } catch (error) {
     return res.json({
@@ -30,4 +45,4 @@ const precontrol = async (req, res) => {
   }
 }
 
-module.exports = { precontrol }
+module.exports = { predicationController }

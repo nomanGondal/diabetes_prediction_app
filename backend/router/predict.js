@@ -1,7 +1,7 @@
 const express = require("express")
-const { precontrol } = require("../controller/precontroller")
+const { predicationController } = require("../controller/precontroller")
 const router = express.Router()
 
-router.post("/get-form-data", precontrol)
+router.post("/get-form-data", predicationController)
 
 module.exports = router
