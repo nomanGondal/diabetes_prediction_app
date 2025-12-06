@@ -1,7 +1,7 @@
 import { useState } from "react"
 import "./prediction.css"
 import axios from "axios"
-import { API_URL } from "../constants"
+//import { API_URL } from "../constants"
 
 function Prediction() {
   const [formData, setFormData] = useState({
@@ -34,8 +34,10 @@ function Prediction() {
 
     setLoading(true)
     try {
-      const response = await axios.post(API_URL, formData)
+      
+      const response = await axios.post("http://localhost:3000/prediction/get-form-data", formData)
       setResult(response.data.data)
+
     } catch (err) {
       console.error(err)
       alert("Error connecting to server. Please try again.")
@@ -43,7 +45,7 @@ function Prediction() {
       setLoading(false)
     }
   }
-
+ console.log("Current result:", result);
   return (
     <div className="prediction-container">
       <h1 className="prediction-title">Diabetes Risk Prediction</h1>
@@ -230,14 +232,24 @@ function Prediction() {
 
         <div className="prediction-result">
           {result && (
-            <div className={`result-card ${result.toLowerCase()}`}>
+            <>
+            <div className={`result-card ${result}`}>
               <h2>Prediction Result</h2>
               <p>
-                {result === "Positive"
+                {result.prediction === 1
                   ? "High risk of diabetes"
                   : "Low risk of diabetes"}
               </p>
+            </div> 
+
+            <div className={`result-card ${result}`}>
+              <h2>Prediction Result</h2>
+              <p>
+                <h2>probability</h2>
+                {result.prob}
+              </p>
             </div>
+            </>
           )}
 
           <div className="tips-card">

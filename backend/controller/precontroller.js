@@ -1,6 +1,7 @@
 const { flaskResponse } = require("../services/flask-predication.service")
 
 const predicationController = async (req, res) => {
+  console.log("Received request body:", req.body); // Debugging line
   try {
     const {
       BMI,
@@ -31,10 +32,7 @@ const predicationController = async (req, res) => {
     return res.send({
       success: true,
       message: "prediction generated",
-      data: {
-        hello: "we got you broh",
-      },
-      flaskResult,
+      data: flaskResult,
     })
   } catch (error) {
     return res.json({
