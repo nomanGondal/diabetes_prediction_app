@@ -1,7 +1,8 @@
 import { useState } from "react"
 import "./prediction.css"
 import axios from "axios"
-//import { API_URL } from "../constants"
+import { Link } from "react-router-dom"
+import { useNavigate } from "react-router-dom"
 
 function Prediction() {
   const [formData, setFormData] = useState({
@@ -18,7 +19,7 @@ function Prediction() {
 
   const [result, setResult] = useState(null)
   const [loading, setLoading] = useState(false)
-
+  const navigate = useNavigate();
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value })
   }
@@ -34,7 +35,7 @@ function Prediction() {
 
     setLoading(true)
     try {
-      
+
       const response = await axios.post("http://localhost:3000/prediction/get-form-data", formData)
       setResult(response.data.data)
 
@@ -45,7 +46,7 @@ function Prediction() {
       setLoading(false)
     }
   }
- console.log("Current result:", result);
+  console.log("Current result:", result);
   return (
     <div className="prediction-container">
       <h1 className="prediction-title">Diabetes Risk Prediction</h1>
@@ -232,24 +233,11 @@ function Prediction() {
 
         <div className="prediction-result">
           {result && (
-            <>
-            <div className={`result-card ${result}`}>
-              <h2>Prediction Result</h2>
-              <p>
-                {result.prediction === 1
-                  ? "High risk of diabetes"
-                  : "Low risk of diabetes"}
-              </p>
-            </div> 
 
-            <div className={`result-card ${result}`}>
-              <h2>Prediction Result</h2>
-              <p>
-                <h2>probability</h2>
-                {result.prob}
-              </p>
-            </div>
-            </>
+            <button onClick={() => navigate("/report", { state: { prediction: result } })}>
+              View Report
+            </button>
+
           )}
 
           <div className="tips-card">
