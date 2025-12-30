@@ -1,25 +1,26 @@
 import { useState } from "react"
 import "./prediction.css"
-import axios from "axios"
-import { Link } from "react-router-dom"
-import { useNavigate } from "react-router-dom"
+import { getGeminiSuggestions } from "../apiCalls/gemini-call"
 
 function Prediction() {
-  const [formData, setFormData] = useState({
+  const initialFormData = {
     BMI: "",
-    HighBP: "",
-    HighChol: "",
+    HighBP: null,
+    HighChol: null,
     Age: "",
     PhysActivity: "",
     HeartDiseaseorAttack: "",
     GenHlth: "",
     PhysHlth: "",
     DiffWalk: "",
-  })
+  }
 
+  const [formData, setFormData] = useState(initialFormData)
   const [result, setResult] = useState(null)
   const [loading, setLoading] = useState(false)
-  const navigate = useNavigate();
+  const [suggestions, setSuggestions] = useState("")
+  const [suggestionLoading, setSuggestionLoading] = useState(false)
+
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value })
   }
@@ -27,192 +28,212 @@ function Prediction() {
   const handleSubmit = async (e) => {
     e.preventDefault()
     for (const key in formData) {
-      if (!formData[key]) {
+      if (formData[key] === "") {
         alert(`Please fill the field: ${key}`)
         return
       }
     }
 
     setLoading(true)
+    setSuggestionLoading(true)
+    setSuggestions("") // Clear previous suggestions
+
     try {
+      // Dummy prediction data
+      const dummyData = {
+        predication: 1,
+        prob: 0.2231,
+      }
+      setResult(dummyData)
 
-      const response = await axios.post("http://localhost:3000/prediction/get-form-data", formData)
-      setResult(response.data.data)
+      // Gemini API call
+      const suggestionText = await getGeminiSuggestions(dummyData.predication)
+      setSuggestions(suggestionText)
 
+      // Reset form
+      setFormData(initialFormData)
     } catch (err) {
       console.error(err)
-      alert("Error connecting to server. Please try again.")
+      setSuggestions("Unable to fetch suggestions.")
     } finally {
       setLoading(false)
+      setSuggestionLoading(false)
     }
   }
-  console.log("Current result:", result);
-  return (
-    <div className="prediction-container">
-      <h1 className="prediction-title">Diabetes Risk Prediction</h1>
-      <p className="prediction-subtitle">
-        Fill in your health information below to check your diabetes risk.
-      </p>
 
+  const handleRecheck = () => {
+    window.location.reload() // Full page refresh
+  }
+
+  return (
+    <div className="prediction">
       <div className="prediction-content">
         <form className="prediction-form" onSubmit={handleSubmit}>
-          {/* BMI */}
-          <div className="form-group">
-            <label htmlFor="BMI">BMI</label>
-            <input
-              type="number"
-              name="BMI"
-              id="BMI"
-              value={formData.BMI}
-              onChange={handleChange}
-              placeholder="Enter BMI"
-              required
-              min="12"
-              max="100"
-            />
-          </div>
+          {/* Horizontal rows */}
+          <div className="form-row">
+            <div className="form-group">
+              <label htmlFor="BMI">BMI</label>
+              <input
+                type="number"
+                name="BMI"
+                id="BMI"
+                value={formData.BMI}
+                onChange={handleChange}
+                placeholder="Enter BMI"
+                required
+                min="12"
+                max="100"
+              />
+            </div>
 
-          {/* HighBP */}
-          <div className="form-group">
-            <label>High Blood Pressure</label>
-            <div className="radio-group">
-              <label>
-                <input
-                  type="radio"
-                  name="HighBP"
-                  value="0"
-                  checked={formData.HighBP === 0}
-                  onChange={() => setFormData({ ...formData, HighBP: 0 })}
-                />
-                No
-              </label>
-
-              <label>
-                <input
-                  type="radio"
-                  name="HighBP"
-                  value="1"
-                  checked={formData.HighBP === 1}
-                  onChange={() => setFormData({ ...formData, HighBP: 1 })}
-                />
-                Yes
-              </label>
+            <div className="form-group">
+              <label htmlFor="Age">Age</label>
+              <input
+                type="number"
+                name="Age"
+                id="Age"
+                value={formData.Age}
+                onChange={handleChange}
+                placeholder="Enter Age"
+                required
+                min="0"
+              />
             </div>
           </div>
 
-          {/* Highchol */}
-          <div className="form-group">
-            <label>High Cholesterol level</label>
-            <div className="radio-group">
-              <label>
-                <input
-                  type="radio"
-                  name="HighChol"
-                  value="0"
-                  checked={formData.HighChol === 0}
-                  onChange={() => setFormData({ ...formData, HighChol: 0 })}
-                />
-                No
-              </label>
+          <div className="form-row">
+            <div className="form-group">
+              <label>High Blood Pressure</label>
+              <div className="radio-group">
+                <label>
+                  <input
+                    type="radio"
+                    name="HighBP"
+                    value="0"
+                    checked={formData.HighBP === 0}
+                    onChange={(e) =>
+                      setFormData({
+                        ...formData,
+                        HighBP: Number(e.target.value),
+                      })
+                    }
+                  />
+                  No
+                </label>
+                <label>
+                  <input
+                    type="radio"
+                    name="HighBP"
+                    value="1"
+                    checked={formData.HighBP === 1}
+                    onChange={() => setFormData({ ...formData, HighBP: 1 })}
+                  />
+                  Yes
+                </label>
+              </div>
+            </div>
 
-              <label>
-                <input
-                  type="radio"
-                  name="HighChol"
-                  value="1"
-                  checked={formData.HighChol === 1}
-                  onChange={() => setFormData({ ...formData, HighChol: 1 })}
-                />
-                Yes
-              </label>
+            <div className="form-group">
+              <label>High Cholesterol</label>
+              <div className="radio-group">
+                <label>
+                  <input
+                    type="radio"
+                    name="HighChol"
+                    value="0"
+                    checked={formData.HighChol === 0}
+                    onChange={(e) =>
+                      setFormData({
+                        ...formData,
+                        HighChol: Number(e.target.value),
+                      })
+                    }
+                  />
+                  No
+                </label>
+                <label>
+                  <input
+                    type="radio"
+                    name="HighChol"
+                    value="1"
+                    checked={formData.HighChol === 1}
+                    onChange={(e) =>
+                      setFormData({
+                        ...formData,
+                        HighChol: Number(e.target.value),
+                      })
+                    }
+                  />
+                  Yes
+                </label>
+              </div>
             </div>
           </div>
 
-          {/* Age */}
-          <div className="form-group">
-            <label htmlFor="Age">Age</label>
-            <input
-              type="number"
-              name="Age"
-              id="Age"
-              value={formData.Age}
-              onChange={handleChange}
-              placeholder="Enter Age"
-              required
-              min="0"
-            />
+          <div className="form-row">
+            <div className="form-group">
+              <label htmlFor="PhysActivity">Physically Active (0/1)</label>
+              <input
+                type="number"
+                name="PhysActivity"
+                id="PhysActivity"
+                value={formData.PhysActivity}
+                onChange={handleChange}
+                placeholder="0 or 1"
+                required
+                min="0"
+                max="1"
+              />
+            </div>
+            <div className="form-group">
+              <label htmlFor="HeartDiseaseorAttack">Heart Disease (0/1)</label>
+              <input
+                type="number"
+                name="HeartDiseaseorAttack"
+                id="HeartDiseaseorAttack"
+                value={formData.HeartDiseaseorAttack}
+                onChange={handleChange}
+                placeholder="0 or 1"
+                required
+                min="0"
+                max="1"
+              />
+            </div>
           </div>
 
-          {/* PhysActivity */}
-          <div className="form-group">
-            <label htmlFor="PhysActivity">
-              Physically Active (Yes=1 / No=0)
-            </label>
-            <input
-              type="number"
-              name="PhysActivity"
-              id="PhysActivity"
-              value={formData.PhysActivity}
-              onChange={handleChange}
-              placeholder="0 or 1"
-              required
-              min="0"
-              max="1"
-            />
-          </div>
-
-          {/* HeartDiseaseorAttack */}
-          <div className="form-group">
-            <label htmlFor="HeartDiseaseorAttack">
-              Heart Disease or Attack (Yes=1 / No=0)
-            </label>
-            <input
-              type="number"
-              name="HeartDiseaseorAttack"
-              id="HeartDiseaseorAttack"
-              value={formData.HeartDiseaseorAttack}
-              onChange={handleChange}
-              placeholder="0 or 1"
-              required
-              min="0"
-              max="1"
-            />
-          </div>
-
-          {/* GenHlth */}
-          <div className="form-group">
-            <label htmlFor="GenHlth">General Health (1-5)</label>
-            <input
-              type="number"
-              name="GenHlth"
-              id="GenHlth"
-              value={formData.GenHlth}
-              onChange={handleChange}
-              placeholder="1=Excellent, 5=Poor"
-              required
-              min="1"
-              max="5"
-            />
-          </div>
-
-          {/* PhysHlth */}
-          <div className="form-group">
-            <label htmlFor="PhysHlth">Physical Health (0-30 days)</label>
-            <input
-              type="number"
-              name="PhysHlth"
-              id="PhysHlth"
-              value={formData.PhysHlth}
-              onChange={handleChange}
-              placeholder="Enter number of unhealthy days"
-              required
-              min="0"
-              max="30"
-            />
+          <div className="form-row">
+            <div className="form-group">
+              <label htmlFor="GenHlth">General Health (1-5)</label>
+              <input
+                type="number"
+                name="GenHlth"
+                id="GenHlth"
+                value={formData.GenHlth}
+                onChange={handleChange}
+                placeholder="1=Excellent, 5=Poor"
+                required
+                min="1"
+                max="5"
+              />
+            </div>
+            <div className="form-group">
+              <label htmlFor="PhysHlth">Physical Health (0-30)</label>
+              <input
+                type="number"
+                name="PhysHlth"
+                id="PhysHlth"
+                value={formData.PhysHlth}
+                onChange={handleChange}
+                placeholder="Unhealthy days"
+                required
+                min="0"
+                max="30"
+              />
+            </div>
           </div>
 
           <div className="form-group">
-            <label htmlFor="DiffWalk">Difficulty Walking (Yes=1 / No=0)</label>
+            <label htmlFor="DiffWalk">Difficulty Walking (0/1)</label>
             <input
               type="number"
               name="DiffWalk"
@@ -229,15 +250,45 @@ function Prediction() {
           <button type="submit" className="submit-btn" disabled={loading}>
             {loading ? "Predicting..." : "Check Risk"}
           </button>
+
+          <div className="instruction-box">
+            <h4>Instructions:</h4>
+            <p>
+              Fill all fields accurately. Use 0 or 1 for yes/no questions. Enter
+              numbers for health stats.
+            </p>
+          </div>
         </form>
 
         <div className="prediction-result">
           {result && (
+            <div
+              className={`result-card ${
+                result.predication === 1 ? "positive" : "negative"
+              }`}
+            >
+              <p>
+                Prediction: {result.predication === 1 ? "Positive" : "Negative"}
+              </p>
+              <p>Probability: {(result.prob * 100).toFixed(2)}%</p>
+            </div>
+          )}
 
-            <button onClick={() => navigate("/report", { state: { prediction: result } })}>
-              View Report
+          <div className="suggestion-box">
+            <h3>Suggestions / Recommendations</h3>
+            {suggestionLoading ? (
+              <div className="loader"></div>
+            ) : (
+              <div style={{ whiteSpace: "pre-line" }}>
+                {suggestions.replace(/\*\*/g, "").replace(/\*/g, "•")} There are
+                no suggestions for now.
+              </div>
+            )}
+          </div>
+          {result && (
+            <button className="recheck-btn" onClick={handleRecheck}>
+              Recheck
             </button>
-
           )}
 
           <div className="tips-card">

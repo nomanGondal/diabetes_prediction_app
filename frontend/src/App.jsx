@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom"
 import Home from "./pages/Home"
 import Prediction from "./pages/Prediction"
 import Report from "./pages/Report"
+import "./App.css"
 
 function App() {
   return (

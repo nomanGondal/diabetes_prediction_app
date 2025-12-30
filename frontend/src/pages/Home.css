@@ -1,14 +1,12 @@
-/* PAGE LAYOUT */
 .home-container {
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 60px 80px;
   min-height: 100vh;
-  background: linear-gradient(135deg, #e5f6ff, #ffffff);
+  background: linear-gradient(135deg, #ffffffff, #ffffff);
 }
 
-/* LEFT SIDE CONTENT */
 .home-content {
   max-width: 600px;
 }
@@ -18,6 +16,16 @@
   font-weight: 700;
   color: #0a3d62;
   margin-bottom: 20px;
+  font-family: "Mulish", sans-serif;
+}
+.suggestion-box {
+  margin-top: 20px;
+  padding: 20px;
+  background: #f0f7ff;
+  border-left: 5px solid #1e90ff;
+  border-radius: 6px;
+  font-size: 0.95rem;
+  line-height: 1.5;
 }
 
 .subtitle {
@@ -25,9 +33,9 @@
   line-height: 1.6;
   color: #2f3640;
   margin-bottom: 40px;
+  font-family: "Mulish", sans-serif;
 }
 
-/* MAIN CTA BUTTON */
 .predict-btn {
   padding: 15px 35px;
   background-color: #0984e3;
