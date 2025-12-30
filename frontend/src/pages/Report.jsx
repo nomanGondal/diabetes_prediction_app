@@ -1,8 +1,8 @@
-import { useLocation } from "react-router-dom";
+import { useLocation } from "react-router-dom"
 
 function Report() {
-  const location = useLocation();
-  const { prediction } = location.state || {}; // fallback to {} if state is undefined
+  const location = useLocation()
+  const { prediction } = location.state || {}
 
   return (
     <div>
@@ -13,7 +13,7 @@ function Report() {
         <p>No prediction data found.</p>
       )}
     </div>
-  );
+  )
 }
 
-export default Report;
+export default Report
