@@ -23,7 +23,7 @@ export const getGeminiSuggestions = async (prediction) => {
       {
         headers: {
           "Content-Type": "application/json",
-          "x-goog-api-key": "AIzaSyDhkK7wHY-LqProqlbDsOXSt6tc6fqg89Q", // replace with your key
+          "x-goog-api-key": "AIzaSyCKnUKO3A_8JGgVUBDxxfC-26Xvwu1Tm5U", // replace with your key
         },
       }
     )

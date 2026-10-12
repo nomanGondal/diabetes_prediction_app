@@ -1,6 +1,7 @@
 import { useState } from "react"
 import "./prediction.css"
 import { getGeminiSuggestions } from "../apiCalls/gemini-call"
+import { getPrediction } from "../apiCalls/prediction-call"
 
 function Prediction() {
   const initialFormData = {
@@ -39,21 +40,18 @@ function Prediction() {
     setSuggestions("") // Clear previous suggestions
 
     try {
-      // Dummy prediction data
-      const dummyData = {
-        predication: 1,
-        prob: 0.2231,
-      }
-      setResult(dummyData)
+      // Call the prediction API
+      const predictionData = await getPrediction(formData)
+      setResult(predictionData.data)
 
       // Gemini API call
-      const suggestionText = await getGeminiSuggestions(dummyData.predication)
+      const suggestionText = await getGeminiSuggestions(predictionData.prediction)
       setSuggestions(suggestionText)
 
       // Reset form
       setFormData(initialFormData)
     } catch (err) {
-      console.error(err)
+      console.error("Error in handleSubmit:", err)
       setSuggestions("Unable to fetch suggestions.")
     } finally {
       setLoading(false)

@@ -1,6 +1,7 @@
 import "./home.css";
 import { useNavigate } from "react-router-dom";
-
+import Header from "../components/header";
+import Footer from "../components/Footer";
 function Home() {
   const navigate = useNavigate();
 
@@ -9,7 +10,9 @@ function Home() {
   };
 
   return (
+    <div><Header />
     <div className="home-container">
+      
       <div className="home-content">
         <h1 className="title">Diabetes Prediction System</h1>
         <p className="subtitle">
@@ -25,6 +28,8 @@ function Home() {
       <div className="hero-image">
         {/* Add your own image or leave blank */}
       </div>
+    </div>
+    <Footer />
     </div>
   );
 }

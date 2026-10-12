@@ -3,7 +3,7 @@ const { flaskResponse } = require("../services/flask-predication.service")
 const predicationController = async (req, res) => {
   console.log("Received request body:", req.body); // Debugging line
   try {
-    const {
+    let {
       BMI,
       HighBP,
       HighChol,
@@ -15,18 +15,20 @@ const predicationController = async (req, res) => {
       DiffWalk,
     } = req.body
 
+    let scaleage = Math.round((Age / 100) * 13);
+
     const flaskArray = [
       BMI,
       HighBP,
       HighChol,
-      Age,
+      scaleage,
       PhysActivity,
       HeartDiseaseorAttack,
       GenHlth,
       PhysHlth,
       DiffWalk,
     ]
-
+console.log("Data sent to Flask service:", flaskArray); // Debugging line
     const flaskResult = await flaskResponse(flaskArray)
 
     return res.send({

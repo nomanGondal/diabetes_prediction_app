@@ -1,4 +1,4 @@
 const BASE_URL = "http://localhost:3000"
-const API_URL = `${BASE_URL}/predication/get-form/data`
+const API_URL = `${BASE_URL}/prediction/get-form-data`
 
 export { API_URL }
